@@ -16,6 +16,11 @@ import org.mule.common.metadata.MetaDataModel;
 import org.mule.common.metadata.builder.DefaultMetaDataBuilder;
 import org.mule.common.metadata.builder.DynamicObjectBuilder;
 import org.mule.common.metadata.datatype.DataType;
+import org.mule.modules.grpc.util.GRPCReflectionUtil;
+
+import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor.Type;
 
 /**
  * Category which can differentiate between input or output MetaDataRetriever
@@ -23,11 +28,6 @@ import org.mule.common.metadata.datatype.DataType;
 @MetaDataCategory
 public class DataSenseResolver {
 
-    /**
-     * If you have a service that describes the entities, you may want to use
-     * that through the connector. Devkit will inject the connector, after
-     * initializing it.
-     */
     @Inject
     private GRPCConnector connector;
 
@@ -37,10 +37,12 @@ public class DataSenseResolver {
     @MetaDataKeyRetriever
     public List<MetaDataKey> getMetaDataKeys() throws Exception {
         List<MetaDataKey> keys = new ArrayList<MetaDataKey>();
-
-        //Generate the keys
-        keys.add(new DefaultMetaDataKey("ENTITY_TYPE_1", "User"));
-        keys.add(new DefaultMetaDataKey("ENTITY_TYPE_2", "Book"));
+        
+        List<String> methods = GRPCReflectionUtil.listPublicMethods(connector.getConfig().getBlockingStub());
+        
+        for(String s : methods) {
+        	keys.add(new DefaultMetaDataKey(s, s));
+        }
 
         return keys;
     }
@@ -55,27 +57,59 @@ public class DataSenseResolver {
     @MetaDataRetriever
     public MetaData getMetaData(MetaDataKey key) throws Exception {
         DefaultMetaDataBuilder builder = new DefaultMetaDataBuilder();
-        //If you have a Pojo class
-        //PojoMetaDataBuilder<?>  pojoObject=builder.createPojo(Pojo.class);
-
-        //If you use maps as input of your processors that work with DataSense
-        DynamicObjectBuilder<?> dynamicObject = builder.createDynamicObject(key
-                .getId());
-
-        if (key.getId().equals("ENTITY_TYPE_1")) {
-            dynamicObject.addSimpleField("Username", DataType.STRING);
-            dynamicObject.addSimpleField("age", DataType.INTEGER);
+        
+        String methodName = key.getId(); 
+        
+        Descriptor desc = GRPCReflectionUtil.getArgumentProtoDescriptor(connector.getConfig().getBlockingStub().getClass().getName(), methodName);
+        
+        if (desc != null) {
+        	DynamicObjectBuilder<?> dynamicObject = builder.createDynamicObject(desc.getFullName());
+        	
+        	for (FieldDescriptor fd : desc.getFields()) {
+        		String name = fd.getName();
+        		DataType dt = decodeDataType(fd.getType());
+        		dynamicObject.addSimpleField(name, dt);
+        	}
+        	return new DefaultMetaData(dynamicObject.build());
         } else {
-            dynamicObject.addSimpleField("Author", DataType.STRING);
-            dynamicObject.addSimpleField("Tittle", DataType.STRING);
+        	DynamicObjectBuilder<?> dynamicObject = builder.createDynamicObject("Dummy object");
+        	dynamicObject.addSimpleField("Somefield", DataType.STRING);
+        	return new DefaultMetaData(dynamicObject.build());
         }
-        MetaDataModel model = builder.build();
-        MetaData metaData = new DefaultMetaData(model);
-
-        return metaData;
     }
 
-    public GRPCConnector getConnector() {
+    private DataType decodeDataType(Type type) {
+		
+    	switch (type) {
+    	case BOOL:
+    		return DataType.BOOLEAN;
+    	case BYTES:
+    		return DataType.BYTE;
+    	case DOUBLE:
+    		return DataType.DOUBLE;
+    	case ENUM:
+    		return DataType.ENUM;
+    	case FIXED32:
+    		return DataType.INTEGER;
+    	case FIXED64:
+    		return DataType.LONG;
+    	case FLOAT:
+    		return DataType.FLOAT;
+    	case INT32:
+    	case INT64:
+    		return DataType.INTEGER;
+    	case MESSAGE:
+    		return DataType.POJO;
+    	case STRING:
+    		return DataType.STRING;
+    	default:
+    		break;
+    	}
+    	
+		return DataType.POJO;
+	}
+
+	public GRPCConnector getConnector() {
         return connector;
     }
 
