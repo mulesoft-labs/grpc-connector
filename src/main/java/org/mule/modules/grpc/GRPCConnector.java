@@ -21,7 +21,6 @@ import com.google.protobuf.util.JsonFormat;
 import io.grpc.stub.AbstractStub;
 
 @Connector(name="grpc", friendlyName="GRPC")
-@MetaDataScope( DataSenseResolver.class )
 public class GRPCConnector {
 
     @Config
@@ -32,6 +31,7 @@ public class GRPCConnector {
      * Invoke gRPC service 
      */
     @Processor
+    @MetaDataScope(DataSenseResolver.class )
     public AbstractMessage invokeBlocking(@MetaDataKeyParam String operation, @Default("#[payload]") Map<String, Object> data) {
         AbstractStub<?> stub = config.getBlockingStub();
     	AbstractMessage message = GRPCReflectionUtil.buildOperationArgument(stub.getClass(), operation, data);

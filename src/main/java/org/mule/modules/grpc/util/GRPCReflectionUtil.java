@@ -285,4 +285,49 @@ public class GRPCReflectionUtil {
 		}
 	}
 	
+	
+	
+
+	private static Class<?> getReturnType(Class<?> serviceClass, String methodName) {
+		List<Method> candidates = new LinkedList<>();
+		
+		for (Method dm : serviceClass.getDeclaredMethods()) {
+			if (dm.getName().equals(methodName)) {
+				candidates.add(dm);
+			}
+		}
+		
+		if (candidates.isEmpty()) { 
+			logger.info("Could not find method " + methodName + " in class " + serviceClass.getName());
+			return null;
+		}
+		
+		for (Method m : candidates) {
+			return m.getReturnType();
+		}
+		
+		return null;
+	}
+
+
+	public static Descriptor getReturnProtoDescriptor(String serviceClassName, String methodName) {
+		Class<?> serviceClass = null;
+		try {
+			serviceClass = ClassUtils.getClass(serviceClassName);
+		} catch (ClassNotFoundException ex) {
+			logClassNotFound(serviceClassName, ex);
+			return null;
+		}		
+		
+		Class<?> returnType = getReturnType(serviceClass, methodName);
+		
+		try {
+			return (Descriptor) MethodUtils.invokeStaticMethod(returnType, GET_DESCRIPTOR);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("Error while getting descriptor for operation " + methodName);
+			return null;
+		}
+	}
+	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.mule.api.annotations.MetaDataKeyRetriever;
+import org.mule.api.annotations.MetaDataOutputRetriever;
 import org.mule.api.annotations.MetaDataRetriever;
 import org.mule.api.annotations.components.MetaDataCategory;
 import org.mule.common.metadata.DefaultMetaData;
@@ -46,7 +47,17 @@ public class DataSenseResolver {
 
         return keys;
     }
-
+    
+    
+    @MetaDataOutputRetriever
+    public MetaData getMetaDataOutput(MetaDataKey key) throws Exception {
+        String methodName = key.getId(); 
+        Descriptor desc = GRPCReflectionUtil.getReturnProtoDescriptor(getConnector().getConfig().getBlockingStub().getClass().getName(), methodName);
+        return getMetaData(desc);
+    }
+    
+    
+    
     /**
      * Get MetaData given the Key the user selects
      * 
@@ -56,12 +67,14 @@ public class DataSenseResolver {
      */
     @MetaDataRetriever
     public MetaData getMetaData(MetaDataKey key) throws Exception {
-        DefaultMetaDataBuilder builder = new DefaultMetaDataBuilder();
-        
         String methodName = key.getId(); 
-        
-        Descriptor desc = GRPCReflectionUtil.getArgumentProtoDescriptor(connector.getConfig().getBlockingStub().getClass().getName(), methodName);
-        
+        Descriptor desc = GRPCReflectionUtil.getArgumentProtoDescriptor(getConnector().getConfig().getBlockingStub().getClass().getName(), methodName);
+        return getMetaData(desc);
+    }
+    
+    private MetaData getMetaData(Descriptor desc) throws Exception {
+        DefaultMetaDataBuilder builder = new DefaultMetaDataBuilder();
+                
         if (desc != null) {
         	DefaultMetaData md = new DefaultMetaData(createDynamicObjectFromDescriptor(builder.createDynamicObject(desc.getFullName()), desc));
         	return md;
