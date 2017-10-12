@@ -78,7 +78,11 @@ public class DataSenseResolver {
     		String name = fd.getName();
     		DataType dt = decodeDataType(fd.getType());
     		if (dt == DataType.MAP) {
-    			createDynamicObjectFromDescriptor(dynamicObject.addDynamicObjectField(name), fd.getMessageType());
+    			if (fd.isRepeated()) {
+    				createDynamicObjectFromDescriptor(dynamicObject.addList(name).ofDynamicObject(name), fd.getMessageType());
+    			} else {
+    				createDynamicObjectFromDescriptor(dynamicObject.addDynamicObjectField(name), fd.getMessageType());
+    			}
     		} else {
     			dynamicObject.addSimpleField(name, dt);
     		}    		
