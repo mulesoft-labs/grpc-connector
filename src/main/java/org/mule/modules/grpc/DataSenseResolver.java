@@ -79,8 +79,7 @@ public class DataSenseResolver {
         	DefaultMetaData md = new DefaultMetaData(createDynamicObjectFromDescriptor(builder.createDynamicObject(desc.getFullName()), desc));
         	return md;
         } else {
-        	DynamicObjectBuilder<?> dynamicObject = builder.createDynamicObject("Dummy object");
-        	dynamicObject.addSimpleField("Somefield", DataType.STRING);
+        	DynamicObjectBuilder<?> dynamicObject = builder.createDynamicObject("Unknown object");
         	return new DefaultMetaData(dynamicObject.build());
         }
     }
