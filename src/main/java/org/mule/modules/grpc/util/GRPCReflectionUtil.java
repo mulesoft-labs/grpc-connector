@@ -3,6 +3,7 @@ package org.mule.modules.grpc.util;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -166,31 +167,48 @@ public class GRPCReflectionUtil {
 		}
 		return null;
 	}
-
-
+	
 	private static Class<?> retrieveMethodArgument(Class<?> serviceClass, String methodName) {
+		return retrieveMethodArgument(serviceClass, methodName, null, 0);
+	}
+	
+	private static Class<?> retrieveMethodArgument(Class<?> serviceClass, String methodName, Class<?> filter, int index) {
 				
-		Method m = null;
+		List<Method> candidates = new LinkedList<>();
 		
 		for (Method dm : serviceClass.getDeclaredMethods()) {
 			if (dm.getName().equals(methodName)) {
-				m = dm;
-				break;
+				candidates.add(dm);
 			}
 		}
 		
-		if (m == null) { 
+		if (candidates.isEmpty()) { 
+			logger.info("Could not find method " + methodName + " in class " + serviceClass.getName());
 			return null;
 		}
 		
-		Class<?> argument = m.getParameterTypes().length == 1 ? m.getParameterTypes()[0] : null;
-		
-		if (argument == null) { 
-			logger.info("gRPC method does not take argument");
-			return null;
+		for (Method m : candidates) {		
+			Class<?> argument = m.getParameterTypes().length >= index + 1 ? m.getParameterTypes()[index] : null;			
+			
+			if (argument == null) { 
+				//not the right one.
+				continue;
+			}
+			
+			if (filter == null) {
+				//blindly return whatever we found first.
+				return argument;
+			}
+			
+			//this means we have a filter
+			if (filter.isAssignableFrom(argument)) {
+				return argument;
+			} else {
+				continue;
+			}
 		}
-		
-		return argument;
+		logger.info("method " + methodName + " not found or does not take at least " + index + " argument(s).");
+		return null;
 	}
 	
 	private static void logClassNotFound(String name, Throwable cause) {
@@ -221,26 +239,50 @@ public class GRPCReflectionUtil {
 	public static AbstractMessage buildOperationArgument(Class<?> serviceClass, String methodName, Map<String, Object> data) {
 		
 		Class<?> arg = retrieveMethodArgument(serviceClass, methodName);
-		
-		if (arg == null) {
+		return populateFromMap(arg, data);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static AbstractMessage populateFromMap(Class<?> msgClass, Map<String, Object> data) {
+		if (msgClass == null) {
 			return null;
 		}
-		
+
 		try {
-			Object builder = MethodUtils.invokeStaticMethod(arg, NEW_BUILDER);
+			Object builder = MethodUtils.invokeStaticMethod(msgClass, NEW_BUILDER);
 			
 			//go through all the fields and set them in the builder.
 			for (Entry<String, Object> e : data.entrySet()) {
-				//blindly call the setter.
-				builder = MethodUtils.invokeMethod(builder, "set" + StringUtils.capitalize(e.getKey()), e.getValue());	
+				String setterName = "set" + StringUtils.capitalize(e.getKey());
+				Object value = e.getValue();
+				//if we find a map
+				if (e.getValue() instanceof Map) {
+					Class<?> argClass = retrieveMethodArgument(builder.getClass(), setterName, AbstractMessage.class, 0);
+					value = populateFromMap(argClass, (Map<String,Object>) value);
+				} else if (e.getValue() instanceof Collection) {
+					//should be a collection of maps.
+					Collection<Map<String, Object>> c = (Collection<Map<String, Object>>) e.getValue();
+					Class<?> argClass = retrieveMethodArgument(builder.getClass(),  setterName, AbstractMessage.class, 1);
+					for (Map<String, Object> m : c) {
+						value = populateFromMap(argClass, m);
+						//invoke the setter for each one
+						setterName = "add" + StringUtils.capitalize(e.getKey());
+						MethodUtils.invokeMethod(builder, setterName, value);
+					}
+					continue;
+				}
+				
+				//blindly call the setter and hope it works.
+				MethodUtils.invokeMethod(builder, setterName, value);
+				
 			}
 			
 			
 			return (AbstractMessage) MethodUtils.invokeMethod(builder, BUILD, new Object[0]);
 		} catch (Exception ex) {
 			logger.error("Error while populating operation argument", ex);
+			throw new RuntimeException("Could not build GRPC Message from Map", ex);
 		}
-		
-		return null;
 	}
+	
 }

@@ -63,21 +63,30 @@ public class DataSenseResolver {
         Descriptor desc = GRPCReflectionUtil.getArgumentProtoDescriptor(connector.getConfig().getBlockingStub().getClass().getName(), methodName);
         
         if (desc != null) {
-        	DynamicObjectBuilder<?> dynamicObject = builder.createDynamicObject(desc.getFullName());
-        	
-        	for (FieldDescriptor fd : desc.getFields()) {
-        		String name = fd.getName();
-        		DataType dt = decodeDataType(fd.getType());
-        		dynamicObject.addSimpleField(name, dt);
-        	}
-        	return new DefaultMetaData(dynamicObject.build());
+        	DefaultMetaData md = new DefaultMetaData(createDynamicObjectFromDescriptor(builder.createDynamicObject(desc.getFullName()), desc));
+        	return md;
         } else {
         	DynamicObjectBuilder<?> dynamicObject = builder.createDynamicObject("Dummy object");
         	dynamicObject.addSimpleField("Somefield", DataType.STRING);
         	return new DefaultMetaData(dynamicObject.build());
         }
     }
-
+    
+    private MetaDataModel createDynamicObjectFromDescriptor(DynamicObjectBuilder<?> dynamicObject, Descriptor desc) {
+    	
+    	for (FieldDescriptor fd : desc.getFields()) {
+    		String name = fd.getName();
+    		DataType dt = decodeDataType(fd.getType());
+    		if (dt == DataType.MAP) {
+    			createDynamicObjectFromDescriptor(dynamicObject.addDynamicObjectField(name), fd.getMessageType());
+    		} else {
+    			dynamicObject.addSimpleField(name, dt);
+    		}    		
+    	}
+    	return dynamicObject.build();
+    }
+    
+    
     private DataType decodeDataType(Type type) {
 		
     	switch (type) {
@@ -99,7 +108,7 @@ public class DataSenseResolver {
     	case INT64:
     		return DataType.INTEGER;
     	case MESSAGE:
-    		return DataType.POJO;
+    		return DataType.MAP;
     	case STRING:
     		return DataType.STRING;
     	default:
