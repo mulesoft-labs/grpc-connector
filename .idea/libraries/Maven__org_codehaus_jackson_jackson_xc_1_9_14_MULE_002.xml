@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.codehaus.jackson:jackson-xc:1.9.14-MULE-002">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-xc/1.9.14-MULE-002/jackson-xc-1.9.14-MULE-002.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-xc/1.9.14-MULE-002/jackson-xc-1.9.14-MULE-002-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-xc/1.9.14-MULE-002/jackson-xc-1.9.14-MULE-002-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

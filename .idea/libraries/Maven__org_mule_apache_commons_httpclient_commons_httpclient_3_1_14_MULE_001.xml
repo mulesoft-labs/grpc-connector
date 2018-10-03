@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.mule.apache.commons-httpclient:commons-httpclient:3.1-14-MULE-001">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/apache/commons-httpclient/commons-httpclient/3.1-14-MULE-001/commons-httpclient-3.1-14-MULE-001.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/apache/commons-httpclient/commons-httpclient/3.1-14-MULE-001/commons-httpclient-3.1-14-MULE-001-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/apache/commons-httpclient/commons-httpclient/3.1-14-MULE-001/commons-httpclient-3.1-14-MULE-001-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

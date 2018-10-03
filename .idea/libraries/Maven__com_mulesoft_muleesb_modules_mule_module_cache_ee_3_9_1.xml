@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.mulesoft.muleesb.modules:mule-module-cache-ee:3.9.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mulesoft/muleesb/modules/mule-module-cache-ee/3.9.1/mule-module-cache-ee-3.9.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mulesoft/muleesb/modules/mule-module-cache-ee/3.9.1/mule-module-cache-ee-3.9.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mulesoft/muleesb/modules/mule-module-cache-ee/3.9.1/mule-module-cache-ee-3.9.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

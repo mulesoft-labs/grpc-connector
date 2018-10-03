@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.mulesoft.weave:excel:1.1.4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mulesoft/weave/excel/1.1.4/excel-1.1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mulesoft/weave/excel/1.1.4/excel-1.1.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mulesoft/weave/excel/1.1.4/excel-1.1.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
