@@ -1,0 +1,29 @@
+#%RAML1.0
+title: Grpc Client
+baseUri: http://localhost:8081
+
+/grpc:
+  /sendMessage:
+    post: 
+      body:  
+        application/json: 
+        application/xml: 
+        
+      responses: 
+        200:
+          body: 
+           application/json: 
+           application/xml:     
+  /generateErrors:
+    post: 
+      body: 
+        application/json: 
+        application/xml: 
+        
+      responses: 
+        200:
+          body: 
+           application/json: 
+           application/xml:         
+         
+      

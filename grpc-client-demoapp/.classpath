@@ -1,0 +1,39 @@
+<classpath>
+  <classpathentry kind="src" path="src/main/api" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/app" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes"/>
+  <classpathentry kind="src" path="src/test/resources" output="target/test-classes" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="MULE_RUNTIME"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/errorprone/error_prone_annotations/2.1.2/error_prone_annotations-2.1.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mule/modules/grpc-connector/1.0.0-SNAPSHOT/grpc-connector-1.0.0-SNAPSHOT.jar" sourcepath="M2_REPO/org/mule/modules/grpc-connector/1.0.0-SNAPSHOT/grpc-connector-1.0.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/grpc/grpc-context/1.10.0/grpc-context-1.10.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/grpc/grpc-core/1.10.0/grpc-core-1.10.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/grpc/grpc-netty/1.10.0/grpc-netty-1.10.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/grpc-connector-protobuf/grpc-proto/1.0-SNAPSHOT/grpc-proto-1.0-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/grpc/grpc-protobuf/1.10.0/grpc-protobuf-1.10.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/grpc/grpc-protobuf-lite/1.10.0/grpc-protobuf-lite-1.10.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/grpc/grpc-stub/1.10.0/grpc-stub-1.10.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.7/gson-2.7.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/19.0/guava-19.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/code/findbugs/jsr305/3.0.0/jsr305-3.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mule/tools/devkit/mule-devkit-shade/3.9.0/mule-devkit-shade-3.9.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-buffer/4.1.17.Final/netty-buffer-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-codec/4.1.17.Final/netty-codec-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-codec-http/4.1.17.Final/netty-codec-http-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-codec-http2/4.1.17.Final/netty-codec-http2-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-codec-socks/4.1.17.Final/netty-codec-socks-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-common/4.1.17.Final/netty-common-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-handler/4.1.17.Final/netty-handler-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-handler-proxy/4.1.17.Final/netty-handler-proxy-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-resolver/4.1.17.Final/netty-resolver-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty-transport/4.1.17.Final/netty-transport-4.1.17.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/opencensus/opencensus-api/0.11.0/opencensus-api-0.11.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/opencensus/opencensus-contrib-grpc-metrics/0.11.0/opencensus-contrib-grpc-metrics-0.11.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/api/grpc/proto-google-common-protos/1.0.0/proto-google-common-protos-1.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/protobuf/protobuf-java/3.5.1/protobuf-java-3.5.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/protobuf/protobuf-java-util/3.5.1/protobuf-java-util-3.5.1.jar"/>
+</classpath>

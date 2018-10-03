@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:grpc="http://www.mulesoft.org/schema/mule/grpc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/grpc http://www.mulesoft.org/schema/mule/grpc/current/mule-grpc.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <grpc:config name="Grpc__Configuration" doc:name="Grpc: Configuration"/>
+    <flow name="On-Receive-Flow">
+        <grpc:receive-message config-ref="Grpc__Configuration" doc:name="Grpc (Streaming)"/>
+        <logger level="INFO" doc:name="Logger"/>
+        <logger message="Payload at Server #[message.payloadAs(String)]" level="INFO" doc:name="Log Payload"/>
+        <dw:transform-message doc:name="On Receive Response">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	message :"Receive from gRPC server (sendMessage operation)"
+}
+]]></dw:set-payload>
+        </dw:transform-message>
+        <set-property propertyName="custom_header" value="custom_value" doc:name="Set Custom Header"/>
+    </flow>
+    <flow name="grpc-Generate-Error-Flow">
+        <grpc:on-error config-ref="Grpc__Configuration" doc:name="Grpc (Streaming)"/>
+        <logger level="INFO" doc:name="Log Everything"/>
+        <dw:transform-message doc:name="Error Response">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	message : "Error Generated with http.status = 400"
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <set-property propertyName="http.status" value="#[400]" doc:name="Http.Status"/>
+    </flow>
+</mule>

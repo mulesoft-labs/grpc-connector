@@ -1,6 +1,0 @@
-<!-- BEGIN_INCLUDE(grpc:greet) -->
-    <grpc:greet config-ref="" friend="#[map-payload:friend]" />
-<!-- END_INCLUDE(grpc:greet) -->
-<!-- BEGIN_INCLUDE(grpc:add-entity) -->
-    <grpc:add-entity config-ref="" key="id1"/>
-<!-- END_INCLUDE(grpc:add-entity) -->

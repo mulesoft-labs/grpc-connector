@@ -1,34 +1,21 @@
-# GRPC Anypoint Connector
+# Dynamic Logger Controller
 
-[Connector description including destination service or application with]
+Dynamic logger controller provides an interface to update logger level for given application dynamically without redeploying application or making any edits on the server in log4j.xml
 
-# Mule supported versions
-Examples:
-Mule 3.4.x, 3.5.x
-Mule 3.4.1
+This project contains two components:
 
-# [Destination service or application name] supported versions
-Example:
-Oracle E-Business Suite 12.1 and above.
+* An API which utilizes connector to fetch and update logging level for all the apps in the JVM
+* A connector for MuleESB, which connects with JMX and update logger level using MBeans
 
-#Service or application supported modules
-Example:
-Oracle CRM
-Oracle Financials
-or 
-Salesforce API v.24
-Salesforce Metadata API
+# Repository Structure
+This repository consists on the following folders:
+
+* `dynamic-logger-connector` Connector which connects to log4j MBeans
+* `dynamic-logger-service-api` API specifications to fetch all apps on the JVM where this API is deployed
+
+Please read the individual README files found on each folder to get more details on how to use each artifact.
+
+To access web-admin, please visit http://localhost:8081/admin/
 
 
-# Installation 
-For beta connectors you can download the source code and build it with devkit to find it available on your local repository. Then you can add it to Studio
-
-For released connectors you can download them from the update site in Anypoint Studio. 
-Open Anypoint Studio, go to Help → Install New Software and select Anypoint Connectors Update Site where you’ll find all avaliable connectors.
-
-#Usage
-For information about usage our documentation at http://github.com/mulesoft/grpc.
-
-# Reporting Issues
-
-We use GitHub:Issues for tracking issues with this connector. You can report new issues at this link http://github.com/mulesoft/grpc/issues.
+![](https://github.com/mulesoft-consulting/dynamic-logger-controller/blob/master/dynamic-logger-service-api/change-log-level.gif)
