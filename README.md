@@ -8,8 +8,8 @@ This repository consists on the following folders:
 * `grpc-proto` project that includes all required plugins and gRPC dependencies. It also includes .proto file which defines
 client-server communication contract. This project has packaging as jar, and required in connector
 * `grpc-connector` gRPC connector that uses stubs created from .proto file to communicate as server and client
-* `grpc-client-demoapp` A demo MuleApp which acts as client to send messages and attributes to the gRpc server (Another MuleApp)
-*`grpc-server-demoapp` A MuleApp which acts as server using gRPC connector.
+* `grpc-client-demoapp` A demo MuleApp which acts as client to send messages and attributes to the gRpc server (Another MuleApp
+* `grpc-server-demoapp` A MuleApp which acts as server using gRPC connector.
 
 Please read the individual README files found on each folder to get more details on how to use each artifact.
 
