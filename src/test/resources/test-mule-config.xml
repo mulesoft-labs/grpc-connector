@@ -1,0 +1,19 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:grpc-mule="http://www.mulesoft.org/schema/mule/grpc-mule"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/grpc-mule http://www.mulesoft.org/schema/mule/grpc-mule/current/mule-grpc-mule.xsd">
+
+    <grpc-mule:config name="config" configId="configId">
+        <grpc-mule:connection requiredParameter="aValue" />
+    </grpc-mule:config>
+
+    <flow name="sayHiFlow">
+        <grpc-mule:say-hi person="Mariano Gonzalez"/>
+    </flow>
+
+    <flow name="retrieveInfoFlow">
+        <grpc-mule:retrieve-info config-ref="config"/>
+    </flow>
+
+</mule>

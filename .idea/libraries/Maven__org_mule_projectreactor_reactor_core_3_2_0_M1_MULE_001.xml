@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.mule.projectreactor:reactor-core:3.2.0.M1-MULE-001">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/projectreactor/reactor-core/3.2.0.M1-MULE-001/reactor-core-3.2.0.M1-MULE-001.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/projectreactor/reactor-core/3.2.0.M1-MULE-001/reactor-core-3.2.0.M1-MULE-001-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/projectreactor/reactor-core/3.2.0.M1-MULE-001/reactor-core-3.2.0.M1-MULE-001-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.mule.runtime:mule-extensions-soap-api:1.1.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/runtime/mule-extensions-soap-api/1.1.1/mule-extensions-soap-api-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/runtime/mule-extensions-soap-api/1.1.1/mule-extensions-soap-api-1.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/runtime/mule-extensions-soap-api/1.1.1/mule-extensions-soap-api-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
