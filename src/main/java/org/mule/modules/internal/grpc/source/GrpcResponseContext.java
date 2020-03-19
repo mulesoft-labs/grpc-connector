@@ -29,7 +29,7 @@ public class GrpcResponseContext {
         String reasonPhrase = successResponse.getReasonPhrase() == null ? "" : (successResponse.getReasonPhrase());
         MultiMap<String, String> headers = successResponse.getHeaders() == null ? emptyMultiMap() : successResponse.getHeaders();
         headers.put(MEDIA_TYPE, successResponse.getBody().getDataType().getMediaType().toString());
-        headers.put(PAYLOAD_TYPE, successResponse.getBody().getDataType().getType().getName());
+        //headers.put(PAYLOAD_TYPE, successResponse.getBody().getDataType().getType().getName());
         headers.put(STATUS_CODE, statusCode);
         headers.put(REASON_PHRASE, reasonPhrase);
         responseObserver.onNext(GrpcMuleUtils.createGrpcResponse(successResponse.getBody().getValue(), headers));
@@ -43,7 +43,7 @@ public class GrpcResponseContext {
 
         MultiMap<String, String> headers = errorResponse.getHeaders() == null ? emptyMultiMap() : errorResponse.getHeaders();
         headers.put(MEDIA_TYPE, errorResponse.getBody().getDataType().getMediaType().toString());
-        headers.put(PAYLOAD_TYPE, errorResponse.getBody().getDataType().getType().getName());
+        //headers.put(PAYLOAD_TYPE, errorResponse.getBody().getDataType().getType().getName());
         headers.put(STATUS_CODE, statusCode);
         headers.put(REASON_PHRASE, reasonPhrase);
         headers.put(ERROR_DETAIL_DESCRIPTION, error.getDetailedDescription());
