@@ -3,6 +3,7 @@ package org.mule.modules.internal.grpc.utils;
 import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
 import org.mule.grpc.server.MuleMessage;
+import org.mule.modules.api.GrpcMessageAttributes;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.slf4j.Logger;
@@ -20,7 +21,6 @@ public class GrpcMuleUtils {
     private static Logger logger = LoggerFactory.getLogger(GrpcMuleUtils.class);
 
     /**
-     *
      * @param payload
      * @param attributes
      * @return grpc MuleMessage Request
@@ -37,7 +37,6 @@ public class GrpcMuleUtils {
     }
 
     /**
-     *
      * @param streamedPayload
      * @param outboundPropsMap
      * @return Grpc MuleMessage Response
@@ -52,7 +51,6 @@ public class GrpcMuleUtils {
     }
 
     /**
-     *
      * @param payload
      * @return create empty or Grpc Payload
      * @throws IOException
@@ -70,7 +68,6 @@ public class GrpcMuleUtils {
     }
 
     /**
-     *
      * @param attributes
      * @return NulSafe map, null values are replaced with empty string
      */
@@ -96,6 +93,7 @@ public class GrpcMuleUtils {
 
     /**
      * Adds Content-type, media-type to attributes for grpc server to process
+     *
      * @param payload
      * @param attributes
      */
@@ -106,20 +104,28 @@ public class GrpcMuleUtils {
     }
 
     /**
-     *
      * @param grpcResponse
      * @return Response from grpc client to flows
      */
-    public static Result<InputStream, Map<String, String>> prepareResponse(MuleMessage grpcResponse) {
+    public static Result<InputStream, GrpcMessageAttributes> prepareResponse(MuleMessage grpcResponse) {
+        GrpcMessageAttributes grpcMessageAttributes = new GrpcMessageAttributes();
         Map<String, String> attributes = new HashMap<>();
         attributes.putAll(grpcResponse.getAttributesMap());
-        attributes.put(CONTENT_LENGTH, String.valueOf(grpcResponse.getPaylaod().getValue().toByteArray().length));
+        String mediaType = attributes.get(MEDIA_TYPE);
+        //remove duplciate headers
+        attributes.remove(MEDIA_TYPE);
+        attributes.remove(STATUS_CODE);
+        attributes.remove(REASON_PHRASE);
+        grpcMessageAttributes.setStatusCode(grpcResponse.getAttributesOrDefault(STATUS_CODE, ""));
+        grpcMessageAttributes.setReasonPhrase(grpcResponse.getAttributesOrDefault(REASON_PHRASE, ""));
+        grpcMessageAttributes.setHeaders(attributes);
+
         InputStream stream = new ByteArrayInputStream(grpcResponse.getPaylaod().getValue().toByteArray());
-        return Result.<InputStream, Map<String, String>>builder()
+        return Result.<InputStream, GrpcMessageAttributes>builder()
                 .output(stream)
                 .length(grpcResponse.getPaylaod().getValue().toByteArray().length)
-                .mediaType(org.mule.runtime.api.metadata.MediaType.parse(grpcResponse.getAttributesMap().get(MEDIA_TYPE)))
-                .attributes(attributes)
+                .mediaType(org.mule.runtime.api.metadata.MediaType.parse(mediaType))
+                .attributes(grpcMessageAttributes)
                 .attributesMediaType(org.mule.runtime.api.metadata.MediaType.APPLICATION_JAVA)
                 .build();
     }

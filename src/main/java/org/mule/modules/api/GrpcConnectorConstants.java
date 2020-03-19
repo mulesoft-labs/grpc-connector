@@ -23,13 +23,15 @@ public interface GrpcConnectorConstants {
     String GRPC_RESPONSE_CONTEXT = "grpcResponseContext";
     String RESPONSE_CONTEXT_NOT_FOUND = "Response Context is not present. Could not send response.";
     String REMOTELY_CLOSED = "Remotely closed";
-    String MEDIA_TYPE = "__mediaType";
-    String PAYLOAD_TYPE = "__payloadType";
+    String MEDIA_TYPE = "mediaType";
+    String PAYLOAD_TYPE = "payloadType";
     String CONTENT_TYPE = "content-type";
-    String ERROR_DETAIL_DESCRIPTION = "__errorDetailDescription";
-    String ERROR_MESSAGE = "__errorMessage";
-    String STATUS_CODE = "__statusCode";
-    String CONTENT_LENGTH = "__contentLength";
+    String ERROR_DETAIL_DESCRIPTION = "errorDetailDescription";
+    String ERROR_MESSAGE = "errorMessage";
+    String STATUS_CODE = "statusCode";
+    String CONTENT_LENGTH = "content-length";
+    String HEADERS = "headers";
+    String REASON_PHRASE = "reasonPhrase";
     int DEFAULT_RETRY_ATTEMPTS = 3;
 
 }

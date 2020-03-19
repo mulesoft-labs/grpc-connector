@@ -60,11 +60,10 @@ public class GrpcErrorMessageReceiver extends Source<InputStream, Map<String, St
     }
 
     @OnSuccess
-    public void onSuccess(@ParameterGroup(name = SUCCESS_RESPONSE,
-            showInDsl = true)
+    public void onSuccess(@ParameterGroup(name = SUCCESS_RESPONSE, showInDsl = true)
                                   GrpcSuccessResponseBuilder successResponse,
-                          SourceCallbackContext callbackContext,
-                          SourceCompletionCallback sourceCompletionCallback) //
+                                  SourceCallbackContext callbackContext,
+                                  SourceCompletionCallback sourceCompletionCallback) //
             throws Exception {
         GrpcResponseContext grpcResponseContext = callbackContext.<GrpcResponseContext>getVariable(GRPC_RESPONSE_CONTEXT)
                 .orElseThrow(() -> new MuleRuntimeException(I18nMessageFactory.createStaticMessage(RESPONSE_CONTEXT_NOT_FOUND)));

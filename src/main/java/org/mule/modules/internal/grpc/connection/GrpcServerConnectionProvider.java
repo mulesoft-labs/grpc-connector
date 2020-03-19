@@ -37,7 +37,7 @@ public class GrpcServerConnectionProvider implements ConnectionProvider<GrpcServ
             try {
                 serverConnection.startServer();
             } catch (Exception e) {
-                logger.error("Error in starting grpc server ", e.getMessage(), e);
+                logger.error("Error in starting grpc server {}, error {}", e.getMessage(), e);
                 throw new ConnectionException(e.getMessage());
             }
         } else {

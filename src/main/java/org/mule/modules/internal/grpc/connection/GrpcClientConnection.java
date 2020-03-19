@@ -6,6 +6,8 @@ import io.grpc.ManagedChannelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * This class represents an extension connection just as example (there is no real connection with anything here c:).
  */
@@ -18,6 +20,7 @@ public final class GrpcClientConnection {
     private boolean serverStarted = false;
     private int frameSize;
     private ManagedChannel managedChannel;
+    private static final long  MEGABYTE = 1024L * 1024L;
 
     public boolean isServerStarted() {
         return serverStarted;
@@ -83,8 +86,7 @@ public final class GrpcClientConnection {
             }
             managedChannel = ManagedChannelBuilder.forAddress(host, port)
                     .usePlaintext()
-
-                    .maxInboundMessageSize(frameSize * 1000000)
+                    .maxInboundMessageSize(frameSize * (1024*1024))
                     .build();
         }
         if (logger.isDebugEnabled()) {
@@ -92,5 +94,7 @@ public final class GrpcClientConnection {
         }
         return managedChannel;
     }
+
+
 
 }

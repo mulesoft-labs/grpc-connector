@@ -26,10 +26,12 @@ public class GrpcResponseContext {
 
     public void sendGrpcSuccessResponse(GrpcSuccessResponseBuilder successResponse) throws IOException {
         String statusCode = successResponse.getStatusCode() == null ? "200" : String.valueOf(successResponse.getStatusCode());
+        String reasonPhrase = successResponse.getReasonPhrase() == null ? "" : (successResponse.getReasonPhrase());
         MultiMap<String, String> headers = successResponse.getHeaders() == null ? emptyMultiMap() : successResponse.getHeaders();
         headers.put(MEDIA_TYPE, successResponse.getBody().getDataType().getMediaType().toString());
         headers.put(PAYLOAD_TYPE, successResponse.getBody().getDataType().getType().getName());
         headers.put(STATUS_CODE, statusCode);
+        headers.put(REASON_PHRASE, reasonPhrase);
         responseObserver.onNext(GrpcMuleUtils.createGrpcResponse(successResponse.getBody().getValue(), headers));
         responseObserver.onCompleted();
 
@@ -37,11 +39,14 @@ public class GrpcResponseContext {
 
     public void sendGrpcErrorResponse(GrpcListenerErrorResponseBuilder errorResponse, Error error) throws IOException {
         String statusCode = errorResponse.getStatusCode() == null ? "500" : String.valueOf(errorResponse.getStatusCode());
+        String reasonPhrase = errorResponse.getReasonPhrase() == null ? "" : (errorResponse.getReasonPhrase());
+
         MultiMap<String, String> headers = errorResponse.getHeaders() == null ? emptyMultiMap() : errorResponse.getHeaders();
         headers.put(MEDIA_TYPE, errorResponse.getBody().getDataType().getMediaType().toString());
         headers.put(PAYLOAD_TYPE, errorResponse.getBody().getDataType().getType().getName());
         headers.put(STATUS_CODE, statusCode);
-          headers.put(ERROR_DETAIL_DESCRIPTION, error.getDetailedDescription());
+        headers.put(REASON_PHRASE, reasonPhrase);
+        headers.put(ERROR_DETAIL_DESCRIPTION, error.getDetailedDescription());
 //        headers.put(ERROR_RESPONSE, error.getErrorMessage().toString());
         responseObserver.onNext(GrpcMuleUtils.createGrpcResponse(errorResponse.getBody().getValue(), headers));
         responseObserver.onCompleted();

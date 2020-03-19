@@ -1,8 +1,10 @@
 package org.mule.modules.internal.grpc.operations;
 
 import io.grpc.ManagedChannel;
+import io.grpc.internal.GrpcAttributes;
 import org.mule.grpc.server.ExchangeMessageGrpc;
 import org.mule.grpc.server.MuleMessage;
+import org.mule.modules.api.GrpcMessageAttributes;
 import org.mule.modules.internal.grpc.config.GrpcClientConfiguration;
 import org.mule.modules.internal.grpc.connection.GrpcClientConnection;
 import org.mule.modules.internal.grpc.utils.GrpcMuleUtils;
@@ -33,10 +35,10 @@ public class GrpcOperations {
 
     @MediaType(value = ANY, strict = false)
     @DisplayName("Send-Message")
-    public Result<InputStream, Map<String, String>> sendMessage(@Config GrpcClientConfiguration configuration,
-                                                                @Connection GrpcClientConnection connection,
-                                                                @Content TypedValue<InputStream> payload,
-                                                                Map<String, String> attributes) throws Exception {
+    public Result<InputStream, GrpcMessageAttributes> sendMessage(@Config GrpcClientConfiguration configuration,
+                                                                  @Connection GrpcClientConnection connection,
+                                                                  @Content TypedValue<InputStream> payload,
+                                                                  Map<String, String> attributes) throws Exception {
         MuleMessage grpcRequest = GrpcMuleUtils.createGrpcRequest(payload, attributes);
         ManagedChannel managedChannel = connection.getManagedChannel();
         ExchangeMessageGrpc.ExchangeMessageBlockingStub blockingStub = ExchangeMessageGrpc.newBlockingStub(managedChannel);
@@ -50,7 +52,7 @@ public class GrpcOperations {
     @MediaType(value = ANY, strict = false)
     @DisplayName("Ping-Grpc-Server")
     @Summary("Pings Grpc Server to verify health of connection")
-    public Result<InputStream, Map<String, String>> pingServer(@Config GrpcClientConfiguration configuration,
+    public Result<InputStream, GrpcMessageAttributes>  pingServer(@Config GrpcClientConfiguration configuration,
                                                                @Connection GrpcClientConnection connection,
                                                                @Content(primary = true) TypedValue<InputStream> payload,
                                                                Map<String, String> attributes) throws Exception {
@@ -66,7 +68,7 @@ public class GrpcOperations {
 
     @MediaType(value = ANY, strict = false)
     @DisplayName("Send Error")
-    public Result<InputStream, Map<String, String>> sendError(@Config GrpcClientConfiguration configuration,
+    public Result<InputStream, GrpcMessageAttributes>  sendError(@Config GrpcClientConfiguration configuration,
                                                                @Connection GrpcClientConnection connection,
                                                                @Content(primary = true) TypedValue<InputStream> payload,
                                                                Map<String, String> attributes) throws Exception {
@@ -82,7 +84,7 @@ public class GrpcOperations {
 
     @MediaType(value = ANY, strict = false)
     @DisplayName("Load Cache")
-    public Result<InputStream, Map<String, String>> loadCache(@Config GrpcClientConfiguration configuration,
+    public Result<InputStream, GrpcMessageAttributes>  loadCache(@Config GrpcClientConfiguration configuration,
                                                               @Connection GrpcClientConnection connection,
                                                               @Content(primary = true) TypedValue<InputStream> payload,
                                                               Map<String, String> attributes) throws Exception {
@@ -97,7 +99,7 @@ public class GrpcOperations {
     }
     @MediaType(value = ANY, strict = false)
     @DisplayName("Refresh Cache")
-    public Result<InputStream, Map<String, String>> refreshCache(@Config GrpcClientConfiguration configuration,
+    public Result<InputStream, GrpcMessageAttributes>  refreshCache(@Config GrpcClientConfiguration configuration,
                                                               @Connection GrpcClientConnection connection,
                                                               @Content(primary = true) TypedValue<InputStream> payload,
                                                               Map<String, String> attributes) throws Exception {
